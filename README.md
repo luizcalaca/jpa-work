@@ -1,80 +1,95 @@
 # jpa-work
 Código fonte do trabalho da disciplina Persistência JPA da pós-graduação Desenvolvimento Full Stack da Faculdade Delta
 
-@MappedSuperclass
-  Superclasse
+**@MappedSuperclass**
+
+Superclasse
   
-@Version
-  Versão
+**@Version**
+
+Versão
   
-@Entity
+**@Entity**
+
 Anotação que demonstra que a entidade é persistível
 
-@Table
+**@Table**
+
   Tabela
   
-@Id
+**@Id**
+
 Referencia de que o atributo é chave primária
 
-@GeneratedValue
+**@GeneratedValue**
+
 Gerará automaticamente o valor da chave primária
 
-@Column
+**@Column**
+
   Coluna
   
-@Basic
+**@Basic**
+
   Colunas
-@Temporal
+  
+**@Temporal**
+
   Calendário
   
-@ManyToOne
+**@ManyToOne**
+
 Mapeamento de muitos para um
 
-@ManyToMany
+**@ManyToMany**
+
 Mapeamento de muitos para muitos
 
-@OneToOne
+**@OneToOne**
+
 Mapeamento de um para um
 
-@JoinColumn
+**@JoinColumn**
+
   Unir colunas
   
-@JoinTable
+**@JoinTable**
+
   Unir tabelas
   
 
-Qual a responsabilidade/objeto dos métodos do EntityManager:
+**Qual a responsabilidade/objeto dos métodos do EntityManager:**
 
--isOpen
+**isOpen()**
 Verificar se a conexão está aberta
 
 
--close
+**close()**
 Fechar a conexão
 
 
--createQuery
+**createQuery()**
 Criar uma nova query
 
 
--find
+**find()**
 Encontrar um registro de acordo com algum parâmetro
 
 
--merge
+**merge()**
 Atualizar o registro no bano de dados
 
 
--persist
+**persist()**
 Persistir o objeto no banco de dados
 
 
--remove
+**remove()**
 Remover um registro do banco de dados
 
 
 
-Como instânciar Criteria do Hibernate através do EntityManager?
+**Como instânciar Criteria do Hibernate através do EntityManager?**
 
     private EntityManager em;
     
@@ -90,19 +105,19 @@ Como instânciar Criteria do Hibernate através do EntityManager?
 		  return getSession().createCriteria(clazz, alias);
 	  }
   
-Como abrir uma transação?
+**Como abrir uma transação?**
 
 	  private void abrirTransaction(){
 		  em.getTransaction().begin();
 	  }
 
-Como fechar uma transação?
+**Como fechar uma transação?**
 
   	 private void fecharTransaction(){
 		   if(em.isOpen()){em.close();}
 	  }
 
-Como criar e executar uma query com JPQL?
+**Como criar e executar uma query com JPQL?**
 
   	 private void execQueryJpql(){
 		    StringBuilder hql = new StringBuilder();
@@ -112,18 +127,18 @@ Como criar e executar uma query com JPQL?
         Long qtdRegistros = (Long) query.getSingleResult();
 	  }
 
-Qual a responsabilidade dos valores FetchType.LAZY e FetchType.EAGER?
+**Qual a responsabilidade dos valores FetchType.LAZY e FetchType.EAGER?**
 
 Quando há uma dependência em um objeto, por exemplo, um livro tem uma lista de autores, e ao chamar o objeto Livro, poderemos somente trazê-lo LAZY -- sem dependências -- ou EAGER -- com suas dependências.
 
-Qual a responsabilidade dos valores CascadeType.PERSIST e CascadeType.REMOVE?
+**Qual a responsabilidade dos valores CascadeType.PERSIST e CascadeType.REMOVE?**
 
 PERSIST irá persistir o objeto e suas dependências. O REMOVE irá removerr o objeto com suas dependências.
 
-Como fazer uma operação BATCH (DELETE ou UPDATE) através do EntityManager?
+**Como fazer uma operação BATCH (DELETE ou UPDATE) através do EntityManager?**
 	
 Deletar e atualizar um objeto.
 
-Qual a explicação para a exception LazyInitializationException?
+**Qual a explicação para a exception LazyInitializationException?**
 
 Quando se tenta trazer o objeto que não está mais na sessão ou no EntityManager, então, é lançada tal exceção.
