@@ -3,11 +3,16 @@ package br.edu.faculdadedelta.modelo.test;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,6 +48,20 @@ public class AutorTest{
 		assertTrue("certifica que a base foi limpada", qtdRegistrosExcluidos > 0);
 	}
 	
+	private Session getSession(){
+		return (Session) em.getDelegate();
+	}
+	
+	@SuppressWarnings("unused")
+	private Criteria createCriteria(Class<?> clazz){
+		return getSession().createCriteria(clazz);
+	}
+	
+	@SuppressWarnings("unused")
+	private Criteria createCriteria(Class<?> clazz, String alias){
+		return getSession().createCriteria(clazz, alias);
+	}
+	
 	@Test
 	public void deveSalvarAutor() {
 		Autor autor = new Autor("Luiz");
@@ -53,6 +72,16 @@ public class AutorTest{
 		em.getTransaction().commit();
 		
 		assertNotNull("deve ter ID definido", autor.getId());
+	}
+	
+	public void criarAutores(int quantidade){
+		em.getTransaction().begin();
+		for (int i = 0; i < 10; i++) {
+			Autor autor = new Autor();
+			autor.setNome("teste" + i);
+			em.persist(autor);
+		}
+		em.getTransaction().commit();
 	}
 
 	@Test
@@ -136,6 +165,65 @@ public class AutorTest{
 		Autor autor = query.getSingleResult();
 
 		assertTrue("deve ter encontrado um Autor", autor.getId() == 1);
+	}
+	
+	@Test
+	public void deveConsultarAutoresChaveValor(){
+		criarAutores(5);
+		
+		ProjectionList projection = Projections.projectionList()
+				.add(Projections.property("c.id").as("id"))
+				.add(Projections.property("c.nome").as("nome"));
+		
+		Criteria criteria = createCriteria(Autor.class, "c")
+				.setProjection(projection);
+		
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> clientes = criteria
+				.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
+				.list();
+		
+		assertTrue("verifica se a quantidade de autores é pelo menos 5", clientes.size() >= 5);
+		
+		clientes.forEach(clienteMap ->{
+			clienteMap.forEach((chave, valor) -> {
+				assertTrue("chave deve ser String", chave instanceof String);
+				assertTrue("valor deve ser String ou Long", valor instanceof String || valor instanceof Long);
+			}) ;
+		});
+	}
+	
+	@Test
+	public void deveConsultarTodosAutores(){
+		criarAutores(3);
+		
+		Criteria criteria = createCriteria(Autor.class,"c");
+		
+		@SuppressWarnings("unchecked")
+		List<Autor> autores = 
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+		.list();
+		
+		
+		assertTrue("lista deve ter pelo menos 3", autores.size() >= 3);
+		
+		autores.forEach(cliente -> {
+			assertFalse(cliente.isTransient());
+		});
+	}
+	
+	@Test
+	public void deveConsultarMaiorIdAutor(){
+		criarAutores(3);
+		
+		Criteria criteria = createCriteria(Autor.class, "c")
+				.setProjection(Projections.max("c.id"));
+		
+		Long maiorId = (Long) criteria
+				.setResultTransformer(Criteria.PROJECTION)
+				.uniqueResult();
+		
+		assertTrue("ID deve ser pelo menos 3", maiorId >= 3);
 	}
 
 
