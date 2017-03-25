@@ -19,6 +19,7 @@ import br.edu.faculdadedelta.util.test.JpaUtil;
 
 public class AutorTest{
 	
+	private static final Object NOME_PADRAO = "Luiz";
 	private EntityManager em;
 	
 	
@@ -44,8 +45,8 @@ public class AutorTest{
 	
 	@Test
 	public void deveSalvarAutor() {
-		Autor autor = new Autor("Dell");
-		assertTrue("não deve ter ID definido", autor.isTransient());
+		Autor autor = new Autor("Luiz");
+		//assertTrue("não deve ter ID definido", autor.isTransient());
 
 		em.getTransaction().begin();	
 		em.persist(autor);
@@ -78,19 +79,6 @@ public class AutorTest{
 	}
 	
 	@Test
-	public void devePesquisarAutors() {
-		for (int i = 0; i < 10; i++) {
-			deveSalvarAutor();
-		}
-		
-		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p", Autor.class);
-		List<Autor> Autors = query.getResultList();
-		
-		assertFalse("deve ter encontrado um Autor", Autors.isEmpty());
-		assertTrue("deve ter encontrado vários Autors", Autors.size() >= 10);
-	}
-	
-	@Test
 	public void deveExcluirAutor() {
 		deveSalvarAutor();
 		
@@ -110,6 +98,45 @@ public class AutorTest{
 	}
 	
 	
+	@Test
+	public void deveTrazerTodosAutores() {
+		for (int i = 0; i < 10; i++) {
+			deveSalvarAutor();
+		}
+		
+		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p", Autor.class);
+		List<Autor> Autors = query.getResultList();
+		
+		assertFalse("deve ter encontrado um Autor", Autors.isEmpty());
+		assertTrue("deve ter encontrado vários Autors", Autors.size() >= 10);
+	}
+	
+	@Test
+	public void deveTrazerTodosLuizAutores() {
+		for (int i = 0; i < 10; i++) {
+			deveSalvarAutor();
+		}
+		
+		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p where p.nome = :nome", Autor.class);
+		query.setParameter("nome", NOME_PADRAO);
+		List<Autor> autores = query.getResultList();
+		
+		assertFalse("deve ter encontrado um Autor", autores.isEmpty());
+		assertTrue("deve ter encontrado vários Autors", autores.size() >= 2);
+	}
+	
+	@Test
+	public void deveBuscarPorIdAutor() {
+		for (int i = 0; i < 10; i++) {
+			deveSalvarAutor();
+		}
+		
+		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p where p.id = :id", Autor.class);
+		query.setParameter("id", 1);
+		Autor autor = query.getSingleResult();
+
+		assertTrue("deve ter encontrado um Autor", autor.getId() == 1);
+	}
 
 
 }
