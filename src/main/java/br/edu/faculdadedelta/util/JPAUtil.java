@@ -11,7 +11,7 @@ public enum JPAUtil {
 	private EntityManagerFactory factory;
 
 	private JPAUtil() {
-		factory = Persistence.createEntityManagerFactory("DeltaPU");
+		factory = Persistence.createEntityManagerFactory("JPAWork");
 	}
 
 	public EntityManager getEntityManager() {

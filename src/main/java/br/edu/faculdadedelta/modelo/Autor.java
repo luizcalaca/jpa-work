@@ -14,16 +14,21 @@ public class Autor extends BaseEntity<Long>  {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id_autor", unique = true, nullable = false)
-	private Long id;
+	private long id;
 	
 	private String nome;
+
+	public Autor(String nome) {
+		this.nome = nome;
+	}
 
 	public Autor() {
 		super();
 	}
-
+	
+	@Override
 	public Long getId() {
 		return id;
 	}

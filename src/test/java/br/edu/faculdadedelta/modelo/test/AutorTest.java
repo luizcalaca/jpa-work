@@ -8,14 +8,51 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import br.edu.faculdadedelta.base.test.BaseTest;
 import br.edu.faculdadedelta.modelo.Autor;
 import br.edu.faculdadedelta.util.JPAUtil;
+import br.edu.faculdadedelta.util.test.JpaUtil;
 
-public class AutorTest extends BaseTest{
+public class AutorTest{
+	
+	private EntityManager em;
+	
+	
+	@Before
+	public void instanciarEntityManager(){em = JpaUtil.INSTANCE.getEntityManager();}
+	
+	@After
+	public void fecharEntityManager(){if(em.isOpen()){em.close();}}
+	
+	@AfterClass
+	public static void deveLimparBaseTeste() {
+		EntityManager entityManager = JPAUtil.INSTANCE.getEntityManager();
+		
+		entityManager.getTransaction().begin();
+		
+		Query query = entityManager.createQuery("DELETE FROM Autor p");
+		int qtdRegistrosExcluidos = query.executeUpdate();
+		
+		entityManager.getTransaction().commit();
+
+		assertTrue("certifica que a base foi limpada", qtdRegistrosExcluidos > 0);
+	}
+	
+	@Test
+	public void deveSalvarAutor() {
+		Autor autor = new Autor("Dell");
+		assertTrue("não deve ter ID definido", autor.isTransient());
+
+		em.getTransaction().begin();	
+		em.persist(autor);
+		em.getTransaction().commit();
+		
+		assertNotNull("deve ter ID definido", autor.getId());
+	}
 
 	@Test
 	public void deveAlterarAutor() {
@@ -72,32 +109,7 @@ public class AutorTest extends BaseTest{
 		assertNull("não deve ter encontrado o Autor", AutorExcluido);
 	}
 	
-	@Test
-	public void deveSalvarAutor() {
-		Autor autor = new Autor();
-		autor.setNome("Dell");
-		
-		assertTrue("não deve ter ID definido", autor.isTransient());
-		
-		em.getTransaction().begin();	
-		em.persist(autor);
-		em.getTransaction().commit();
-		
-		assertNotNull("deve ter ID definido", autor.getId());
-	}
 	
-	@AfterClass
-	public static void deveLimparBaseTeste() {
-		EntityManager entityManager = JPAUtil.INSTANCE.getEntityManager();
-		
-		entityManager.getTransaction().begin();
-		
-		Query query = entityManager.createQuery("DELETE FROM Autor p");
-		int qtdRegistrosExcluidos = query.executeUpdate();
-		
-		entityManager.getTransaction().commit();
 
-		assertTrue("certifica que a base foi limpada", qtdRegistrosExcluidos > 0);
-	}
 
 }
