@@ -2,6 +2,7 @@ package br.edu.faculdadedelta.modelo.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.edu.faculdadedelta.modelo.Autor;
 import br.edu.faculdadedelta.modelo.Livro;
 import br.edu.faculdadedelta.util.JPAUtil;
 import br.edu.faculdadedelta.util.test.JpaUtil;
@@ -78,11 +80,17 @@ public class LivroTest{
 	
 	public void criarLivroes(int quantidade){
 		em.getTransaction().begin();
+		List<Autor> autores = new ArrayList<Autor>();
+		Autor autor = new Autor();
+		
 		for (int i = 0; i < 10; i++) {
 			Livro livro = new Livro();
 			livro.setTitulo("teste" + i);
 			livro.setIsbn("456-56-564" + i);
 			livro.setPreco(50 + i);
+			autor.setNome("Autor" + i);
+			autores.add(autor);
+			livro.setAutores(autores);
 			em.persist(livro);
 		}
 		em.getTransaction().commit();

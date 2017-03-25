@@ -22,6 +22,8 @@ public class Pessoa extends BaseEntity<Long>  {
 	
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private List<Reserva> reservas;
+	
+	private String nome;
 
 	public Pessoa() {
 		
@@ -42,5 +44,15 @@ public class Pessoa extends BaseEntity<Long>  {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	
    
 }
