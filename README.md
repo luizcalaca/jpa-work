@@ -106,6 +106,17 @@ Como criar e executar uma query com JPQL?
 	  }
 
 Qual a responsabilidade dos valores FetchType.LAZY e FetchType.EAGER?
+
+Quando há uma dependência em um objeto, por exemplo, um livro tem uma lista de autores, e ao chamar o objeto Livro, poderemos somente trazê-lo LAZY -- sem dependências -- ou EAGER -- com suas dependências.
+
 Qual a responsabilidade dos valores CascadeType.PERSIST e CascadeType.REMOVE?
+
+PERSIST irá persistir o objeto e suas dependências. O REMOVE irá removerr o objeto com suas dependências.
+
 Como fazer uma operação BATCH (DELETE ou UPDATE) através do EntityManager?
+	
+Deletar e atualizar um objeto.
+
 Qual a explicação para a exception LazyInitializationException?
+
+Quando se tenta trazer o objeto que não está mais na sessão ou no EntityManager, então, é lançada tal exceção.
