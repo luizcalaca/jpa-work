@@ -2,11 +2,17 @@
 Código fonte do trabalho da disciplina Persistência JPA da pós-graduação Desenvolvimento Full Stack da Faculdade Delta
 
 @MappedSuperclass
+  Superclasse
+  
 @Version
+  Versão
+  
 @Entity
 Anotação que demonstra que a entidade é persistível
 
 @Table
+  Tabela
+  
 @Id
 Referencia de que o atributo é chave primária
 
@@ -14,8 +20,13 @@ Referencia de que o atributo é chave primária
 Gerará automaticamente o valor da chave primária
 
 @Column
+  Coluna
+  
 @Basic
+  Colunas
 @Temporal
+  Calendário
+  
 @ManyToOne
 Mapeamento de muitos para um
 
@@ -26,40 +37,74 @@ Mapeamento de muitos para muitos
 Mapeamento de um para um
 
 @JoinColumn
-
+  Unir colunas
+  
 @JoinTable
+  Unir tabelas
+  
 
 Qual a responsabilidade/objeto dos métodos do EntityManager:
- isOpen
+
+isOpen
 Verificar se a conexão está aberta
 
- close
+close
 Fechar a conexão
 
- createQuery
+createQuery
 Criar uma nova query
 
- find
+find
 Encontrar um registro de acordo com algum parâmetro
 
- merge
+merge
 Atualizar o registro no bano de dados
 
- persist
+persist
 Persistir o objeto no banco de dados
 
- remove
+remove
 Remover um registro do banco de dados
 
 
 Como instânciar Criteria do Hibernate através do EntityManager?
-Dê exemplo do código
+
+    private EntityManager em;
+    
+    private Session getSession(){
+		  return (Session) em.getDelegate();
+	  }
+  
+	  private Criteria createCriteria(Class<?> clazz){
+		  return getSession().createCriteria(clazz);
+	  }
+  
+	  private Criteria createCriteria(Class<?> clazz, String alias){
+		  return getSession().createCriteria(clazz, alias);
+	  }
+  
 Como abrir uma transação?
-Dê exemplo do código
+
+	  private void abrirTransaction(){
+		  em.getTransaction().begin();
+	  }
+
 Como fechar uma transação?
-Dê exemplo do código
+
+  	 private void fecharTransaction(){
+		   if(em.isOpen()){em.close();}
+	  }
+
 Como criar e executar uma query com JPQL?
-Dê exemplo do código
+
+  	 private void execQueryJpql(){
+		    StringBuilder hql = new StringBuilder();
+        hql.append("SELECT COUNT(p.id) FROM Venda v ");
+
+        Query query = em.createQuery(hql.toString());
+        Long qtdRegistros = (Long) query.getSingleResult();
+	  }
+
 Qual a responsabilidade dos valores FetchType.LAZY e FetchType.EAGER?
 Qual a responsabilidade dos valores CascadeType.PERSIST e CascadeType.REMOVE?
 Como fazer uma operação BATCH (DELETE ou UPDATE) através do EntityManager?
