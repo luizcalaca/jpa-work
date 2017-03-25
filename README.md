@@ -45,26 +45,33 @@ Mapeamento de um para um
 
 Qual a responsabilidade/objeto dos métodos do EntityManager:
 
-isOpen
+-isOpen
 Verificar se a conexão está aberta
 
-close
+
+-close
 Fechar a conexão
 
-createQuery
+
+-createQuery
 Criar uma nova query
 
-find
+
+-find
 Encontrar um registro de acordo com algum parâmetro
 
-merge
+
+-merge
 Atualizar o registro no bano de dados
 
-persist
+
+-persist
 Persistir o objeto no banco de dados
 
-remove
+
+-remove
 Remover um registro do banco de dados
+
 
 
 Como instânciar Criteria do Hibernate através do EntityManager?
