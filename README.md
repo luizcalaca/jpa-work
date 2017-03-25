@@ -3,61 +3,62 @@ Código fonte do trabalho da disciplina Persistência JPA da pós-graduação De
 
 **@MappedSuperclass**
 
-Superclasse
+Quando for gerado as tabelas tal não será gerada, mas, tão somente as classes filhas.
   
 **@Version**
 
-Versão
-  
+Ao adicionar um atributo com essa anotação não precisamos nos preocupar em alterar seu valor porque o Hibernate fica encarregado dessa função. Seu objetivo é usar automaticamente o número da versão para verificar se o objeto utilizado na transição foi atualizado desde a ultima vez em que ele foi requisitado, evitando que transações diferentes usem o mesmo objeto.
+
 **@Entity**
 
-Anotação que demonstra que a entidade é persistível
+Anotação que demonstra que a entidade é persistível.
 
 **@Table**
 
-  Tabela
+Se necessitarmos definir o nome de uma tabela e outros atributos.
   
 **@Id**
 
-Referencia de que o atributo é chave primária
+Referencia de que o atributo é chave primária.
 
 **@GeneratedValue**
 
-Gerará automaticamente o valor da chave primária
+Gerará automaticamente o valor da chave primária.
 
 **@Column**
 
-  Coluna
+  Especifia o nome da coluna e outros atributos.
   
 **@Basic**
 
-  Colunas
+Especifica para um atributo que será coluna do bando algumas propriedades, como por exemplo não ser nulo.
   
 **@Temporal**
 
-  Calendário
+Configuramos como mapear um Calendar para o banco, apenas a hora (TemporalType.TIME) ou timestamp (TemporalType.TIMESTAMP).
   
 **@ManyToOne**
 
-Mapeamento de muitos para um
+Mapeamento de muitos para um.
 
 **@ManyToMany**
 
-Mapeamento de muitos para muitos
+Mapeamento de muitos para muitos.
 
 **@OneToOne**
 
-Mapeamento de um para um
+Mapeamento de um para um.
 
 **@JoinColumn**
 
-  Unir colunas
+Aponta uma coluna que servirá de chave primária na tabela de relacionamento.
   
 **@JoinTable**
 
-  Unir tabelas
+É para o mapeamento da tabela intermediária (que liga duas tabelas) e contém duas chaves estrangeiras.
   
-
+  
+  
 **Qual a responsabilidade/objeto dos métodos do EntityManager:**
 
 **isOpen()**
