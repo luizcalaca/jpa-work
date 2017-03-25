@@ -79,10 +79,8 @@ public class AutorTest extends BaseTest{
 		
 		assertTrue("não deve ter ID definido", autor.isTransient());
 		
-		em.getTransaction().begin();
-		
+		em.getTransaction().begin();	
 		em.persist(autor);
-		
 		em.getTransaction().commit();
 		
 		assertNotNull("deve ter ID definido", autor.getId());
