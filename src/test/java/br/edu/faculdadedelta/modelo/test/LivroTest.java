@@ -18,13 +18,13 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.edu.faculdadedelta.modelo.Autor;
+import br.edu.faculdadedelta.modelo.Livro;
 import br.edu.faculdadedelta.util.JPAUtil;
 import br.edu.faculdadedelta.util.test.JpaUtil;
 
-public class AutorTest{
+public class LivroTest{
 	
-	private static final Object NOME_PADRAO = "Luiz";
+	private static final Object TITULO_PADRAO = "Novo";
 	private EntityManager em;
 	
 	
@@ -40,7 +40,7 @@ public class AutorTest{
 		
 		entityManager.getTransaction().begin();
 		
-		Query query = entityManager.createQuery("DELETE FROM Autor p");
+		Query query = entityManager.createQuery("DELETE FROM Livro p");
 		int qtdRegistrosExcluidos = query.executeUpdate();
 		
 		entityManager.getTransaction().commit();
@@ -62,119 +62,126 @@ public class AutorTest{
 	}
 	
 	@Test
-	public void deveSalvarAutor() {
-		Autor autor = new Autor("Luiz");
-		//assertTrue("não deve ter ID definido", autor.isTransient());
+	public void deveSalvarLivro() {
+		Livro livro = new Livro();
+		livro.setTitulo("Novo");
+		livro.setIsbn("456-56-564");
+		livro.setPreco(50);
+		assertTrue("não deve ter ID definido", livro.isTransient());
 
 		em.getTransaction().begin();	
-		em.persist(autor);
+		em.persist(livro);
 		em.getTransaction().commit();
 		
-		assertNotNull("deve ter ID definido", autor.getId());
+		assertNotNull("deve ter ID definido", livro.getId());
 	}
 	
-	public void criarAutores(int quantidade){
+	public void criarLivroes(int quantidade){
 		em.getTransaction().begin();
 		for (int i = 0; i < 10; i++) {
-			Autor autor = new Autor();
-			autor.setNome("teste" + i);
-			em.persist(autor);
+			Livro livro = new Livro();
+			livro.setTitulo("teste" + i);
+			livro.setIsbn("456-56-564" + i);
+			livro.setPreco(50 + i);
+			em.persist(livro);
 		}
 		em.getTransaction().commit();
 	}
 
 	@Test
-	public void deveAlterarAutor() {
-		deveSalvarAutor();
+	public void deveAlterarLivro() {
+		deveSalvarLivro();
 		
-		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p", Autor.class).setMaxResults(1);
+		TypedQuery<Livro> query = em.createQuery("SELECT p FROM livro p", Livro.class).setMaxResults(1);
 		
-		Autor autor = query.getSingleResult();
+		Livro livro = query.getSingleResult();
 		
-		assertNotNull("deve ter encontrado um Autor", autor);
+		assertNotNull("deve ter encontrado um Livro", livro);
 		
-		Integer versao = autor.getVersion();
+		Integer versao = livro.getVersion();
 		
 		em.getTransaction().begin();
 		
-		autor.setNome("Antônio Bandeira");
+		livro.setTitulo("Antônio Bandeira");
+		livro.setIsbn("456-56-564");
+		livro.setPreco(50);
 		
-		autor = em.merge(autor);
+		livro = em.merge(livro);
 		
 		em.getTransaction().commit();
 		
-		assertNotEquals("deve ter versao incrementada", versao.intValue(), autor.getVersion().intValue());
+		assertNotEquals("deve ter versao incrementada", versao.intValue(), livro.getVersion().intValue());
 	}
 	
 	@Test
-	public void deveExcluirAutor() {
-		deveSalvarAutor();
+	public void deveExcluirLivro() {
+		deveSalvarLivro();
 		
-		TypedQuery<Long> query = em.createQuery("SELECT MAX(p.id) FROM Autor p", Long.class);
+		TypedQuery<Long> query = em.createQuery("SELECT MAX(p.id) FROM Livro p", Long.class);
 		Long id = query.getSingleResult();
 		
 		em.getTransaction().begin();
 		
-		Autor Autor = em.find(Autor.class, id);
-		em.remove(Autor);
+		Livro livro = em.find(Livro.class, id);
+		em.remove(livro);
 		
 		em.getTransaction().commit();
 		
-		Autor AutorExcluido = em.find(Autor.class, id);
+		Livro livroExcluido = em.find(Livro.class, id);
 		
-		assertNull("não deve ter encontrado o Autor", AutorExcluido);
+		assertNull("não deve ter encontrado o Livro", livroExcluido);
 	}
 	
 	
 	@Test
-	public void deveTrazerTodosAutores() {
+	public void deveTrazerTodosLivroes() {
 		for (int i = 0; i < 10; i++) {
-			deveSalvarAutor();
+			deveSalvarLivro();
 		}
 		
-		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p", Autor.class);
-		List<Autor> Autors = query.getResultList();
+		TypedQuery<Livro> query = em.createQuery("SELECT p FROM Livro p", Livro.class);
+		List<Livro> livros = query.getResultList();
 		
-		assertFalse("deve ter encontrado um Autor", Autors.isEmpty());
-		assertTrue("deve ter encontrado vários Autors", Autors.size() >= 10);
+		assertFalse("deve ter encontrado um Livro", livros.isEmpty());
+		assertTrue("deve ter encontrado vários Livros", livros.size() >= 10);
 	}
 	
 	@Test
-	public void deveTrazerTodosLuizAutores() {
+	public void deveTrazerTodosLuizLivroes() {
 		for (int i = 0; i < 10; i++) {
-			deveSalvarAutor();
+			deveSalvarLivro();
 		}
 		
-		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p where p.nome = :nome", Autor.class);
-		query.setParameter("nome", NOME_PADRAO);
-		List<Autor> autores = query.getResultList();
+		TypedQuery<Livro> query = em.createQuery("SELECT p FROM Livro p where p.titulo = :titulo", Livro.class);
+		query.setParameter("titulo", TITULO_PADRAO);
+		List<Livro> livroes = query.getResultList();
 		
-		assertFalse("deve ter encontrado um Autor", autores.isEmpty());
-		assertTrue("deve ter encontrado vários Autors", autores.size() >= 2);
+		assertFalse("deve ter encontrado um Livro", livroes.isEmpty());
+		assertTrue("deve ter encontrado vários Livros", livroes.size() >= 2);
 	}
 	
 	@Test
-	public void deveBuscarPorIdAutor() {
+	public void deveBuscarPorIdLivro() {
 		for (int i = 0; i < 10; i++) {
-			deveSalvarAutor();
+			deveSalvarLivro();
 		}
 		
-		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p where p.id = :id", Autor.class);
+		TypedQuery<Livro> query = em.createQuery("SELECT p FROM Livro p where p.id = :id", Livro.class);
 		query.setParameter("id", 1);
-		Autor autor = query.getSingleResult();
+		Livro livro = query.getSingleResult();
 
-		assertTrue("deve ter encontrado um Autor", autor.getId() == 1);
+		assertTrue("deve ter encontrado um Livro", livro.getId() == 1);
 	}
 	
 	@Test
-	public void deveConsultarAutoresChaveValor(){
-		criarAutores(5);
+	public void deveConsultarLivroesChaveValor(){
+		criarLivroes(5);
 		
 		ProjectionList projection = Projections.projectionList()
 				.add(Projections.property("c.id").as("id"))
-				.add(Projections.property("c.nome").as("nome"));
+				.add(Projections.property("c.titulo").as("titulo"));
 		
-		Criteria criteria = createCriteria(Autor.class, "c")
+		Criteria criteria = createCriteria(Livro.class, "c")
 				.setProjection(projection);
 		
 		@SuppressWarnings("unchecked")
@@ -182,7 +189,7 @@ public class AutorTest{
 				.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)
 				.list();
 		
-		assertTrue("verifica se a quantidade de autores é pelo menos 5", clientes.size() >= 5);
+		assertTrue("verifica se a quantidade de Livroes é pelo menos 5", clientes.size() >= 5);
 		
 		clientes.forEach(clienteMap ->{
 			clienteMap.forEach((chave, valor) -> {
@@ -193,29 +200,29 @@ public class AutorTest{
 	}
 	
 	@Test
-	public void deveConsultarTodosAutores(){
-		criarAutores(3);
+	public void deveConsultarTodosLivroes(){
+		criarLivroes(3);
 		
-		Criteria criteria = createCriteria(Autor.class,"c");
+		Criteria criteria = createCriteria(Livro.class,"c");
 		
 		@SuppressWarnings("unchecked")
-		List<Autor> autores = 
+		List<Livro> livroes = 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 		.list();
 		
 		
-		assertTrue("lista deve ter pelo menos 3", autores.size() >= 3);
+		assertTrue("lista deve ter pelo menos 3", livroes.size() >= 3);
 		
-		autores.forEach(cliente -> {
+		livroes.forEach(cliente -> {
 			assertFalse(cliente.isTransient());
 		});
 	}
 	
 	@Test
-	public void deveConsultarMaiorIdAutor(){
-		criarAutores(3);
+	public void deveConsultarMaiorIdLivro(){
+		criarLivroes(3);
 		
-		Criteria criteria = createCriteria(Autor.class, "c")
+		Criteria criteria = createCriteria(Livro.class, "c")
 				.setProjection(Projections.max("c.id"));
 		
 		Long maiorId = (Long) criteria
