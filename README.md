@@ -4,21 +4,27 @@ Código fonte do trabalho da disciplina Persistência JPA da pós-graduação De
 @MappedSuperclass
 @Version
 @Entity
-	Anotação que demonstra que a entidade é persistível
+Anotação que demonstra que a entidade é persistível
+
 @Table
 @Id
-	Referencia de que o atributo é chave primária
+Referencia de que o atributo é chave primária
+
 @GeneratedValue
-	Gerará automaticamente o valor da chave primária
+Gerará automaticamente o valor da chave primária
+
 @Column
 @Basic
 @Temporal
 @ManyToOne
-	Mapeamento de muitos para um
+Mapeamento de muitos para um
+
 @ManyToMany
-	Mapeamento de muitos para muitos
+Mapeamento de muitos para muitos
+
 @OneToOne
-	Mapeamento de um para um
+Mapeamento de um para um
+
 @JoinColumn
 
 @JoinTable
@@ -26,16 +32,22 @@ Código fonte do trabalho da disciplina Persistência JPA da pós-graduação De
 Qual a responsabilidade/objeto dos métodos do EntityManager:
  isOpen
 Verificar se a conexão está aberta
+
  close
 Fechar a conexão
+
  createQuery
 Criar uma nova query
+
  find
 Encontrar um registro de acordo com algum parâmetro
+
  merge
 Atualizar o registro no bano de dados
+
  persist
 Persistir o objeto no banco de dados
+
  remove
 Remover um registro do banco de dados
 
