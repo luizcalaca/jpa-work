@@ -61,31 +61,31 @@ Aponta uma coluna que servirá de chave primária na tabela de relacionamento.
   
 **Qual a responsabilidade/objeto dos métodos do EntityManager:**
 
-**isOpen()**
+1. **isOpen()**
 Verificar se a conexão está aberta
 
 
-**close()**
+2. **close()**
 Fechar a conexão
 
 
-**createQuery()**
+3. **createQuery()**
 Criar uma nova query
 
 
-**find()**
+4. **find()**
 Encontrar um registro de acordo com algum parâmetro
 
 
-**merge()**
+5. **merge()**
 Atualizar o registro no bano de dados
 
 
-**persist()**
+6. **persist()**
 Persistir o objeto no banco de dados
 
 
-**remove()**
+7. **remove()**
 Remover um registro do banco de dados
 
 
