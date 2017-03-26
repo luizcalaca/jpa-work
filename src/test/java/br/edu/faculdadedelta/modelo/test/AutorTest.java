@@ -63,7 +63,8 @@ public class AutorTest{
 	
 	@Test
 	public void deveSalvarAutor() {
-		Autor autor = new Autor("Luiz");
+		Autor autor = new Autor();
+		autor.setNome("Luiz");
 		assertTrue("não deve ter ID definido", autor.isTransient());
 
 		em.getTransaction().begin();	
@@ -160,7 +161,7 @@ public class AutorTest{
 		}
 		
 		TypedQuery<Autor> query = em.createQuery("SELECT p FROM Autor p where p.id = :id", Autor.class);
-		query.setParameter("id", 1);
+		query.setParameter("id", 1L);
 		Autor autor = query.getSingleResult();
 
 		assertTrue("deve ter encontrado um Autor", autor.getId() == 1);
