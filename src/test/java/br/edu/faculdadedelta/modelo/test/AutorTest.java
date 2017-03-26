@@ -64,7 +64,7 @@ public class AutorTest{
 	@Test
 	public void deveSalvarAutor() {
 		Autor autor = new Autor("Luiz");
-		//assertTrue("não deve ter ID definido", autor.isTransient());
+		assertTrue("não deve ter ID definido", autor.isTransient());
 
 		em.getTransaction().begin();	
 		em.persist(autor);
