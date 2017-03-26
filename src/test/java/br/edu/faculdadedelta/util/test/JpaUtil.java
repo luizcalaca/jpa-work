@@ -13,7 +13,7 @@ public enum JpaUtil {
 
 	public EntityManager getEntityManager() {return factory.createEntityManager();}
 
-	private JpaUtil() {factory = Persistence.createEntityManagerFactory("DeltaPU");}
+	private JpaUtil() {factory = Persistence.createEntityManagerFactory("jpawork");}
 
 	
 	
