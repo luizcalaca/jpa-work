@@ -234,7 +234,7 @@ public class PessoaTest{
 		}
 		
 		TypedQuery<Pessoa> query = em.createQuery("SELECT p FROM Pessoa p where p.id = :id", Pessoa.class);
-		query.setParameter("id", 1);
+		query.setParameter("id", 1L);
 		Pessoa Pessoa = query.getSingleResult();
 
 		assertTrue("deve ter encontrado um Pessoa", Pessoa.getId() == 1);

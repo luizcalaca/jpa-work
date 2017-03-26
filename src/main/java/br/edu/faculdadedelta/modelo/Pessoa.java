@@ -18,7 +18,7 @@ public class Pessoa extends BaseEntity<Long>  {
 	@Id
 	@GeneratedValue
 	@Column(name = "id_pessoa", unique = true, nullable = false)
-	private long id;
+	private Long id;
 	
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
 	private List<Reserva> reservas;

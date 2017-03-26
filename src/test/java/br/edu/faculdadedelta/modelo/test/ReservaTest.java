@@ -75,7 +75,6 @@ public class ReservaTest{
 		Autor autor = new Autor();
 		autor.setNome("Fernando");
 		
-		
 		Livro livro = new Livro();
 		livro.setTitulo("teste");
 		livro.setIsbn("456-56-564");
@@ -85,15 +84,12 @@ public class ReservaTest{
 		List<Autor> autores = new ArrayList<Autor>();
 		List<Reserva> reservas = new ArrayList<Reserva>();
 
-
 		autores.add(autor);
 		livros.add(livro);
 		reservas.add(reserva);
 		
 		livro.setAutores(autores);
-		
 		pessoa.setReservas(reservas);
-		
 		
 		reserva.setLivros(livros);
 		reserva.setPessoa(pessoa);

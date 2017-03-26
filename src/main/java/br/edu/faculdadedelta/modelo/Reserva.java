@@ -20,7 +20,7 @@ public class Reserva extends BaseEntity<Long>  {
 	@Id
 	@GeneratedValue
 	@Column(name = "id_reserva", unique = true, nullable = false)
-	private long id;
+	private Long id;
 
 	@OneToMany(fetch=FetchType.LAZY)
 	private List<Livro> livros = new ArrayList<Livro>();
