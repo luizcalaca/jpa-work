@@ -29,6 +29,7 @@ public class Pessoa extends BaseEntity<Long>  {
 		
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}

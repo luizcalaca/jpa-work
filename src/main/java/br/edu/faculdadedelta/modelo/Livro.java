@@ -36,6 +36,7 @@ public class Livro extends BaseEntity<Long>  {
 		
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
